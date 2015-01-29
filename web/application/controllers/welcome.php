@@ -24,7 +24,41 @@ class Welcome extends CI_Controller {
 
         public function getDirFile($path)
         {
-                if($file_handler)
+                if($file_handler = opendir($path))
+                {
+                    while(false != ($file=readdir($file_handler))) 
+                    {
+                        if($file != "." && $file != "..")
+                        {
+                            if(is_dir("$path/$file"))
+                            {
+                                if(substr_count("$path/$file", "/") > 1)
+                                {
+                                    $count = str_repeat("&nbsp&nbsp&nbsp&nbsp", substr_count("$path/$file", "/"));
+                                    echo $count.$file;
+                                }else
+                                {
+                                    echo $file;
+                                }
+                                echo "<br/>";
+                                getDirFile("$path/$file");
+                                
+                            }else
+                            {
+                                if(substr_count("$path/$file", "/") > 1)
+                                {
+                                    $count = str_repeat("&nbsp&nbsp&nbsp&nbsp", substr_count("$path/$file", "/"));
+                                    echo $count.$file;
+                                }else
+                                {
+                                    echo $file;
+                                }
+                                echo "<br/>";
+
+                            }
+                        }
+                    }
+                }
         }
 
 }
